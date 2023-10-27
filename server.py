@@ -45,7 +45,7 @@ def llm():
 
     if prompt:
         logger.info("prompt history received, continuing conversation")
-        prompt = prompt + + "<|im_end|>\n" + promt_new_question
+        prompt = prompt + "<|im_end|>\n" + promt_new_question
     else:
         logger.info("no prompt history received, starting new conversation")
         prompt = promt_new_question
