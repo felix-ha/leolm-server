@@ -18,7 +18,7 @@ app = Flask(__name__)
 
 port = 5000
 route_check = '/up-status'
-route_mock_model = '/mock-llm'
+route_model = '/llm'
 
 
 def mock_model(question, context):
@@ -33,7 +33,7 @@ def server_is_online():
     logger.info("checked server status")
     return "online"
 
-@app.route(route_mock_model, methods=['POST'])
+@app.route(route_model, methods=['POST'])
 def llm():
     data = request.get_json()
     question = data.get('question', "")
@@ -45,8 +45,7 @@ def llm():
     prompt_format = "<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n"
 
     start_time = time.perf_counter()
-    result = generator(prompt_format.format(prompt=question), do_sample=True, top_p=0.95, max_length=8192)
-    # result = mock_model(question, context)   
+    result = generator(prompt_format.format(prompt=question), do_sample=True, top_p=0.95, max_length=8192) 
     end_time = time.perf_counter()
 
     response = {'answer': result, 'inference_time_seconds': end_time - start_time}
