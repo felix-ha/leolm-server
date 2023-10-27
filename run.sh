@@ -1,3 +1,3 @@
 #!/bin/bash
 
-python server.py
+~/leolm-server/.venv/bin/python3 server.py
