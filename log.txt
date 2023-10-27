@@ -1,0 +1,10 @@
+2023-10-27 21:22:47,372 _internal INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.0.55:5000
+2023-10-27 21:22:47,373 _internal INFO - [33mPress CTRL+C to quit[0m
+2023-10-27 21:22:50,501 server INFO - checked server status
+2023-10-27 21:22:50,503 _internal INFO - 127.0.0.1 - - [27/Oct/2023 21:22:50] "GET /up-status HTTP/1.1" 200 -
+2023-10-27 21:22:52,539 server INFO - received question: qfefe
+2023-10-27 21:22:52,539 server INFO - response: {'answer': 'Das ist die Antwort ohne Kontext!', 'inference_time_seconds': 1.100008375942707e-06}
+2023-10-27 21:22:52,549 _internal INFO - 127.0.0.1 - - [27/Oct/2023 21:22:52] "POST /mock-llm HTTP/1.1" 200 -
