@@ -1,3 +1,6 @@
+from transformers import pipeline
+import torch
+
 from flask import Flask, request, jsonify
 import time
 import logging
@@ -39,8 +42,11 @@ def llm():
     if context:
         logger.info("received context: " + context)
 
+    prompt_format = "<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n"
+
     start_time = time.perf_counter()
-    result = mock_model(question, context)   
+    result = generator(prompt_format.format(prompt=question), do_sample=True, top_p=0.95, max_length=8192)
+    # result = mock_model(question, context)   
     end_time = time.perf_counter()
 
     response = {'answer': result, 'inference_time_seconds': end_time - start_time}
@@ -49,4 +55,11 @@ def llm():
 
 
 if __name__ == '__main__':
+    logger.info("starting server")
+    logging.info("loading model")
+    start_time = time.perf_counter()
+    generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
+    end_time = time.perf_counter()
+    logger.info("loaded model in " + str(end_time - start_time) + " seconds")
     app.run(host="0.0.0.0", port=port)
+    logger.info("server stopped")
