@@ -20,6 +20,8 @@ port = 5000
 route_check = '/up-status'
 route_model = '/llm'
 
+promt_new_question = "<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant\n" 
+
 
 def mock_model(question, context):
     if question == "":
@@ -36,16 +38,26 @@ def server_is_online():
 @app.route(route_model, methods=['POST'])
 def llm():
     data = request.get_json()
-    question = data.get('question', "")
-    context = data.get('context', None)
-    logger.info("received question: " + question)
-    if context:
-        logger.info("received context: " + context)
+    # context = data.get('context', None)
 
-    prompt_format = "<|im_start|>user\n{prompt}<|im_end|>\n<|im_start|>assistant\n"
+    question = data.get('question', "")
+    prompt = data.get('prompt', None)
+
+    if prompt:
+        logger.info("prompt history received, continuing conversation")
+        prompt = prompt + + "<|im_end|>\n" + promt_new_question
+    else:
+        logger.info("no prompt history received, starting new conversation")
+        prompt = promt_new_question
+
+    # if context:
+    #     logger.info("received context: " + context)
+
+    logger.info("received question: " + question)
+
 
     start_time = time.perf_counter()
-    result = generator(prompt_format.format(prompt=question), do_sample=True, top_p=0.95, max_length=8192) 
+    result = generator(prompt.format(question=question), do_sample=True, top_p=0.95, max_length=8192) 
     end_time = time.perf_counter()
 
     response = {'answer': result, 'inference_time_seconds': end_time - start_time}
