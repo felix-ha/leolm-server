@@ -94,7 +94,7 @@ def upload():
             logger.info("prompt history received, continuing conversation")
             prompt = prompt + "<|im_end|>\n" + promt_new_question
         else:
-            prompt = None
+            prompt = promt_new_question
             logger.info("no prompt history received, starting new conversation")
 
             if request.files:
