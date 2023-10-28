@@ -90,7 +90,7 @@ def upload():
             logger.info(f'no question received')
 
         if 'prompt' in request.form.keys():
-            promt_new_question = request.form['prompt']
+            prompt = request.form['prompt']
             logger.info("prompt history received, continuing conversation")
             prompt = prompt + "<|im_end|>\n" + promt_new_question
         else:
