@@ -5,3 +5,4 @@ langchain==0.0.325
 sentence-transformers==2.2.2
 chromadb==0.4.15
 pysqlite3-binary==0.5.2
+supervisor==4.2.5
