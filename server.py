@@ -98,7 +98,6 @@ def upload():
 
         start_time = time.perf_counter()
         result = generator(input_prompt, do_sample=True, top_p=0.95, max_length=8192) 
-        result = "result"
         end_time = time.perf_counter()
 
         response = {'answer': result, 'inference_time_seconds': end_time - start_time}
@@ -111,11 +110,15 @@ def upload():
 
 
 if __name__ == '__main__':
-    logger.info("starting server")
-    logging.info("loading model")
-    start_time = time.perf_counter()
-    generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
-    end_time = time.perf_counter()
-    logger.info("loaded model in " + str(end_time - start_time) + " seconds")
+    try:
+        logger.info("starting server")
+        logging.info("loading model")
+        start_time = time.perf_counter()
+        generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
+        end_time = time.perf_counter()
+        logger.info("loaded model in " + str(end_time - start_time) + " seconds")
+    except Exception as e:
+        logger.exception(str(e))
+        exit(1)
     app.run(host="0.0.0.0", port=port)
     logger.info("server stopped")
