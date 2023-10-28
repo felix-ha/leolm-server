@@ -91,7 +91,7 @@ def upload():
         if context_from_file:
             logging.info(f'context from file {context_from_file}')
             promt_new_question_with_context = "<|im_start|>user\nMit dieser Information:\n{context}\nBeantworte diese Frage:\n{question}<|im_end|>\n<|im_start|>assistant\n"
-            input_prompt = promt_new_question_with_context.format(context=context, question=question)
+            input_prompt = promt_new_question_with_context.format(context=context_from_file, question=question)
             logging.info(f'input prompt {input_prompt}')
         else:
             input_prompt = prompt.format(question=question)
