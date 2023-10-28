@@ -102,7 +102,6 @@ def upload():
         end_time = time.perf_counter()
 
         response = {'answer': result, 'inference_time_seconds': end_time - start_time}
-        logger.info("response length: " + str(len(str(response['answer'][0]['generated_text']))))
         logger.info("response: " + str(response))
         return jsonify(response)
     
