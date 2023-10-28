@@ -1,9 +1,12 @@
-from transformers import pipeline
-import torch
+#from transformers import pipeline
+#import torch
 
 from flask import Flask, request, jsonify
 import time
 import logging
+import tempfile
+from pathlib import Path
+from index import get_context
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -75,12 +78,13 @@ def upload():
     try:
 
         # TODO remove context, it is not used
-        if 'context' in request.form.keys():
-            context = request.form['context']
-            logger.info(f'context {context}')
-        else:
-            context = None
-            logger.info(f'no context received')
+        context = None
+        # if 'context' in request.form.keys():
+        #     context = request.form['context']
+        #     logger.info(f'context {context}')
+        # else:
+        #     context = None
+        #     logger.info(f'no context received')
 
         if 'question' in request.form.keys():
             question = request.form['question']
@@ -98,26 +102,31 @@ def upload():
             logger.info("no prompt history received, starting new conversation")
 
             if request.files:
-                file = request.files['file']
-                logger.info(f'received file {file.filename}')
-                
-                if file.filename.endswith('.txt'):
-                    logger.info(f'processing text file')
-                    pass
-                elif file.filename.endswith('.pdf'):
-                    logger.info(f'processing pdf file')
-                else:
-                    pass
+                with tempfile.TemporaryDirectory() as tmpdir:
+                    file = request.files['file']
+                    file_path = Path(tmpdir) / file.filename
+                    logger.info(f'received file {file.filename}')
+                    
+                    if file.filename.endswith('.txt'):
+                        logger.info(f'processing text file')
+                        file.save(file_path)
+                        context_from_file = get_context(str(file_path), question, chunk_size=250, chunk_overlap=0, n_results=3)
 
+                    elif file.filename.endswith('.pdf'):
+                        logger.info(f'processing pdf file not implemented yet, continuing without context')
+                    else:
+                        logger.info(f'not valid file extension, continuing without context')
 
-        logger.info("received question: " + question)
+        if context_from_file:
+            logging.info(f'context from file {context_from_file}')
 
         start_time = time.perf_counter()
-        result = generator(prompt.format(question=question), do_sample=True, top_p=0.95, max_length=8192) 
+        # result = generator(prompt.format(question=question), do_sample=True, top_p=0.95, max_length=8192) 
+        result = "result"
         end_time = time.perf_counter()
 
         response = {'answer': result, 'inference_time_seconds': end_time - start_time}
-        logger.info("response length: " + str(len(str(response['answer'][0]['generated_text']))))
+        # logger.info("response length: " + str(len(str(response['answer'][0]['generated_text']))))
         logger.info("response: " + str(response))
         return jsonify(response)
     
@@ -130,7 +139,7 @@ if __name__ == '__main__':
     logger.info("starting server")
     logging.info("loading model")
     start_time = time.perf_counter()
-    generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
+    #generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
     end_time = time.perf_counter()
     logger.info("loaded model in " + str(end_time - start_time) + " seconds")
     app.run(host="0.0.0.0", port=port)
