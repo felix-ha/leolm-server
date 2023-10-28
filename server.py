@@ -122,7 +122,7 @@ def upload():
         return jsonify(response)
     
     except Exception as e:
-        logger.info(str(e))
+        logger.exception(str(e))
         return jsonify({'error': str(e)}), 400
 
 
