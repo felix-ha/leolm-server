@@ -47,6 +47,7 @@ def upload():
     logger.info(f'{request.form.keys()=}')
     try:
 
+        context_from_file = None
         # TODO remove context, it is not used
         context = None
         # if 'context' in request.form.keys():
@@ -89,9 +90,14 @@ def upload():
 
         if context_from_file:
             logging.info(f'context from file {context_from_file}')
+            promt_new_question_with_context = "<|im_start|>user\nMit dieser Information:\n{context}\nBeantworte diese Frage:\n{question}<|im_end|>\n<|im_start|>assistant\n"
+            input_prompt = promt_new_question_with_context.format(context=context, question=question)
+            logging.info(f'input prompt {input_prompt}')
+        else:
+            input_prompt = prompt.format(question=question)
 
         start_time = time.perf_counter()
-        result = generator(prompt.format(question=question), do_sample=True, top_p=0.95, max_length=8192) 
+        result = generator(input_prompt, do_sample=True, top_p=0.95, max_length=8192) 
         result = "result"
         end_time = time.perf_counter()
 
