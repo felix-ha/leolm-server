@@ -42,9 +42,9 @@ def ask_model(url_server: str, route_check:str, route_model: str, question: str,
 
         prompt_history = response['answer'][0]['generated_text']
         answer = prompt_history.split('<|im_start|>assistant')[-1].lstrip()
-        return answer, prompt_history
+        return answer, prompt_history, response['context']
     else:
-        return "LLM ist offline!", None
+        return "LLM ist offline!", None, None
 
 
 
@@ -54,13 +54,19 @@ with tempfile.TemporaryDirectory() as tmpdir:
     if "messages" not in st.session_state:
         st.session_state.messages = []
 
+    context = None
+    path_to_upload = None
+
     st.write("""
     # Frag  LeoLM!
     """)
 
+    advanced = st.toggle('Erweiterte Einstellungen')
 
-    context = None
-    path_to_upload = None
+    if advanced:
+        chunk_size = st.slider('chunk_size', 10, 10_000, value=100, step=50, help="Länge der Textabschnitte, die in die Vektordatenbank geladen werden.")
+        chunk_overlap = st.slider('chunk_overlap', 0, 500, value=10, step=10, help="Überlappung der Textabschnitte, die in die Vektordatenbank geladen werden.")
+        n_results = st.slider('n_results', 1, 10, value=3, step=1, help="Anzahl der Ergebnisse, die zurückgegeben werden und als Kontext verwendet werden.")
 
     option = st.selectbox(
     'Was möchtest du fragen?',
@@ -104,7 +110,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
             if len(st.session_state.messages) > 2:
                 prompt_history = st.session_state.messages[-2]['promt_history']
                 path_to_upload = None
-            assistant_response, prompt_history = ask_model(url_server, route_check, route_model, prompt, context, prompt_history, path_to_upload)
+            assistant_response, prompt_history, context = ask_model(url_server, route_check, route_model, prompt, context, prompt_history, path_to_upload)
 
             for chunk in assistant_response.split():
                 full_response += chunk + " "
@@ -112,4 +118,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
                 message_placeholder.markdown(full_response + "▌")
             message_placeholder.markdown(full_response)
 
-        st.session_state.messages.append({"role": "assistant", "content": full_response, "promt_history": prompt_history})
+        st.session_state.messages.append({"role": "assistant", "content": full_response, "promt_history": prompt_history, "context": context})
+
+        if context:
+            st.write(f'Beantwortet mit Kontext:\n {st.session_state.messages[-1]["context"]}')
