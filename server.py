@@ -1,6 +1,4 @@
-from transformers import pipeline
-import torch
-
+import argparse
 from flask import Flask, request, jsonify
 import time
 import logging
@@ -27,12 +25,10 @@ route_upload = '/upload'
 promt_new_question = "<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant\n" 
 
 
-def mock_model(question, context):
-    if question == "":
-        return "Es wurde keine Frage gestellt."
-    if context:
-        return "Das ist die Antwort mit Kontext!"
-    return "Das ist die Antwort ohne Kontext!"
+def mock_pipeline(*args, **kwargs):
+        generated_text = '<|im_start|>assistant\nDebug Modus!'
+        return [{'generated_text': generated_text}]
+
 
 @app.route(route_check)
 def server_is_online():
@@ -110,13 +106,28 @@ def upload():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--deploy_llm",
+        default=False,
+        help="Load llm, gpu required",
+    )
+
+    args = parser.parse_args()
+
     try:
         logger.info("starting server")
-        logging.info("loading model")
-        start_time = time.perf_counter()
-        generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
-        end_time = time.perf_counter()
-        logger.info("loaded model in " + str(end_time - start_time) + " seconds")
+        if args.deploy_llm:
+            logging.info("loading model")
+            start_time = time.perf_counter()
+            from transformers import pipeline
+            import torch  
+            generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
+            end_time = time.perf_counter()
+            logger.info("loaded model in " + str(end_time - start_time) + " seconds")
+        else: 
+            logging.info("using mock model")
+            generator = mock_pipeline
     except Exception as e:
         logger.exception(str(e))
         exit(1)
