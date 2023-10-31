@@ -100,7 +100,7 @@ def upload():
         result = generator(input_prompt, do_sample=True, top_p=0.95, max_length=8192) 
         end_time = time.perf_counter()
 
-        response = {'answer': result, 'inference_time_seconds': end_time - start_time}
+        response = {'answer': result, 'context': context_from_file, 'inference_time_seconds': end_time - start_time}
         logger.info("response: " + str(response))
         return jsonify(response)
     
