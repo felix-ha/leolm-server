@@ -111,6 +111,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--deploy_llm",
+        action=argparse.BooleanOptionalAction,
         default=False,
         help="Load llm, gpu required",
     )
