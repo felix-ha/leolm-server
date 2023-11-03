@@ -2,9 +2,9 @@ import os
 from pathlib import Path
 import time
 import requests
-import json
 import tempfile
 import streamlit as st
+from index import get_wiki_article
 
 
 ip_adress_server = os.getenv('IP_ADRESS_SERVER', 'localhost')
@@ -24,7 +24,8 @@ def server_is_online(url_server: str, route_check:str) -> bool:
         return False
     except requests.exceptions.ConnectionError:
       return False
-    
+
+
 def ask_model(url_server: str, route_check:str, route_model: str, question: str, context: str, prompt_history: str, path_to_upload=None):
     if server_is_online(url_server, route_check):
         payload = {'question': question, 'context': context, 'prompt': prompt_history}
@@ -70,7 +71,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
 
     option = st.selectbox(
     'Was möchtest du fragen?',
-    ('Freie Frage', 'Frage zu einem Dokument'))
+    ('Freie Frage', 'Frage Wikipedia', 'Frage zu einem Dokument'))
 
     if option == 'Frage zu einem Dokument':
         files = st.file_uploader("File upload", type=["txt"], accept_multiple_files=True)
@@ -92,6 +93,17 @@ with tempfile.TemporaryDirectory() as tmpdir:
             if len(files) > 1:
                 st.warning("Nur eine Datei ist akutell unterstützt! Jede weitere Datei wird ignoriert.")
 
+    elif option == 'Frage Wikipedia':
+        wiki_keyword = st.text_input('Artikel', help='Der Wikipedia Artikel, welcher am besten zum Stichwort passt, wird ausgewählt')
+
+        if wiki_keyword:
+            wiki_article = get_wiki_article(wiki_keyword)
+            st.write(f"Wikipedia Artikel - {wiki_article.original_title} - wird befragt.")
+
+            path_to_upload = tmpdir_path / "wikipedia.txt"
+
+            with open(path_to_upload, "w", encoding="utf-8") as f:
+                f.write(wiki_article.content)
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):

@@ -3,9 +3,9 @@ torch==2.0.0
 transformers==4.34.1
 langchain==0.0.325
 sentence-transformers==2.2.2
-chromadb==0.4.15
-pysqlite3-binary==0.5.2
+faiss-gpu==1.7.2
 supervisor==4.2.5
+wikipedia==1.4.0 
 altair
 pydeck
 streamlit

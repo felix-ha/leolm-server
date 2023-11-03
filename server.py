@@ -4,7 +4,7 @@ import time
 import logging
 import tempfile
 from pathlib import Path
-from index import get_context
+from index import get_context, get_documents
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -77,7 +77,9 @@ def upload():
                     if file.filename.endswith('.txt'):
                         logger.info(f'processing text file')
                         file.save(file_path)
-                        context_from_file = get_context(str(file_path), question, chunk_size=250, chunk_overlap=0, n_results=3)
+                        documents = get_documents(str(file_path), chunk_size=250, chunk_overlap=25)
+                        context_from_file = get_context(documents, question, n_results=3)
+                        context_from_file = "\n\n".join(context_from_file)
 
                     elif file.filename.endswith('.pdf'):
                         logger.info(f'processing pdf file not implemented yet, continuing without context')
