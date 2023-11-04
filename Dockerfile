@@ -9,4 +9,4 @@ COPY . .
 
 ENV FLASK_APP=server.py
 
-CMD [ "python3", "server.py", "--deploy_llm"]
+CMD [ "python3", "-u", "server.py", "--deploy_llm"]
