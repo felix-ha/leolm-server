@@ -1,4 +1,7 @@
-FROM python:3.10-slim-buster
+FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu20.04
+
+RUN apt update
+RUN apt install -y python3 python3-pip
 
 WORKDIR /app
 
