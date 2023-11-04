@@ -109,19 +109,19 @@ def upload():
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--deploy_llm",
-        action=argparse.BooleanOptionalAction,
-        default=False,
-        help="Load llm, gpu required",
-    )
+    # parser = argparse.ArgumentParser()
+    # parser.add_argument(
+    #     "--deploy_llm",
+    #     action=argparse.BooleanOptionalAction,
+    #     default=False,
+    #     help="Load llm, gpu required",
+    # )
 
-    args = parser.parse_args()
-
+    # args = parser.parse_args()
+    deploy_llm = True
     try:
         logger.info("starting server")
-        if args.deploy_llm:
+        if deploy_llm:
             logging.info("loading model")
             start_time = time.perf_counter()
             from transformers import pipeline
