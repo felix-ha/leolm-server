@@ -1,3 +1,5 @@
 #!/bin/bash
 
-/home/paperspace/leolm-server/.venv/bin/python3 /home/paperspace/leolm-server/server.py
+cd /home/paperspace/leolm-server/
+
+sudo make docker_run
