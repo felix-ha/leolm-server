@@ -4,4 +4,4 @@ docker_build:
 
 .PHONY: docker_run
 docker_run:
-	docker run -d -p 5000:5000 python-server
+	docker run -d -p 5000:5000 -v ~/.cache/huggingface/hub/:~/.cache/huggingface/hub/ python-server
