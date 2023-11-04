@@ -4,4 +4,4 @@ docker_build:
 
 .PHONY: docker_run
 docker_run:
-	docker run -d -p 5000:5000 -v /home/paperspace/.cache/huggingface/hub/:/home/paperspace/.cache/huggingface/hub/ -e PYTHONUNBUFFERED=1 --name python-server python-server
+	docker run -d -p 5000:5000 -e PYTHONUNBUFFERED=1 --name python-server python-server

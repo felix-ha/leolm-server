@@ -1,7 +1,5 @@
 FROM python:3.10-slim-buster
 
-ENV HUGGINGFACE_HUB_CACHE=/tmp/huggingface_hub
-
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
