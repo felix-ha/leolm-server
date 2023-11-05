@@ -12,4 +12,6 @@ COPY . .
 
 ENV FLASK_APP=server.py
 
+EXPOSE 5000
+
 CMD [ "python3", "server.py"]
