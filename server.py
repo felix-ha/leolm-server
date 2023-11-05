@@ -106,14 +106,9 @@ def upload():
     except Exception as e:
         logger.exception(str(e))
         return jsonify({'error': str(e)}), 400
-    
-
-def main():
-    logger.info("starting server")
 
 
 if __name__ == '__main__':
-    main()
     deploy_llm = os.getenv('DEPLOY_LLM', None)
     logger.info(f"var: {deploy_llm}")
     try:
