@@ -4,11 +4,11 @@ build:
 
 .PHONY: run
 run:
-	nvidia-docker compose run python-server
+	docker compose run python-server
 
 .PHONY: stop
 stop:
-	nvidia-docker compose stop python-server
+	docker compose stop python-server
 
 
 .PHONY: docker_build
