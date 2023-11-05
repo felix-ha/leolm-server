@@ -10,7 +10,7 @@ services:
       - ./resources:/app/resources
     restart: always
     environment:
-    - DEPLOY_LLM="True"
+      - DEPLOY_LLM="True"
     deploy:
       resources:
         reservations:
