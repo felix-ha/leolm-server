@@ -4,7 +4,7 @@ from transformers import Blip2Processor, Blip2ForConditionalGeneration
 
 def run():
     processor = Blip2Processor.from_pretrained("Salesforce/blip2-opt-2.7b")
-    model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b", device_map="auto")
+    model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b", device="cuda")
 
     img_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg' 
     raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
