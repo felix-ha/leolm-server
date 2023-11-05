@@ -110,7 +110,7 @@ def upload():
 
 if __name__ == '__main__':
     deploy_llm = os.getenv('DEPLOY_LLM', None)
-    logger.info(f"var: {deploy_llm}")
+    logger.info(f"DEPLOY_LLM: {deploy_llm}")
     try:
         logger.info("starting server")
         if deploy_llm:
