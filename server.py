@@ -33,7 +33,7 @@ def mock_pipeline(*args, **kwargs):
         return [{'generated_text': generated_text}]
 
 
-@app.route(route_blip2)
+@app.route(route_blip2, methods=['POST'])
 def blip2():
     try:
         result = run()
