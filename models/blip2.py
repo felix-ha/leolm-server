@@ -7,7 +7,7 @@ def run():
     processor = Blip2Processor.from_pretrained("Salesforce/blip2-opt-2.7b")
     model = Blip2ForConditionalGeneration.from_pretrained("Salesforce/blip2-opt-2.7b", torch_dtype=torch.float16, device_map="auto")
 
-    img_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg' 
+    img_url = 'https://hips.hearstapps.com/clv.h-cdn.co/assets/16/18/gettyimages-569175741-1.jpg' 
     raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
 
     question = "how many dogs are in the picture?"
