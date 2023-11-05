@@ -4,7 +4,7 @@ build:
 
 .PHONY: run
 run:
-	docker compose up python-server
+	docker compose up -d python-server
 
 .PHONY: stop
 stop:
