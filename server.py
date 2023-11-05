@@ -5,6 +5,7 @@ import logging
 import tempfile
 from pathlib import Path
 from index import get_context, get_documents
+from models.blip2 import run 
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -22,6 +23,7 @@ port = 5000
 route_check = '/up-status'
 route_model = '/llm'
 route_upload = '/upload'
+route_blip2 = '/blip2'
 
 promt_new_question = "<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant\n" 
 
@@ -29,6 +31,18 @@ promt_new_question = "<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assist
 def mock_pipeline(*args, **kwargs):
         generated_text = '<|im_start|>assistant\nDebug Modus!'
         return [{'generated_text': generated_text}]
+
+
+@app.route(route_blip2)
+def blip2():
+    try:
+        result = run()
+        response = {'answer': result}
+        logger.info("response: " + str(response))
+        return jsonify(response)
+    except Exception as e:
+        logger.exception(str(e))
+        return jsonify({'error': str(e)}), 400
 
 
 @app.route(route_check)
@@ -110,6 +124,7 @@ def upload():
 
 if __name__ == '__main__':
     deploy_llm = os.getenv('DEPLOY_LLM', None)
+    deploy_llm = None
     logger.info(f"DEPLOY_LLM: {deploy_llm}")
     try:
         logger.info("starting server")

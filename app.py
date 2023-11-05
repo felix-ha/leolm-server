@@ -15,5 +15,6 @@ st.markdown(
 
     ### Implemented models:
     - [LeoLM](https://huggingface.co/LeoLM/leo-mistral-hessianai-7b-chat)
+    - [BLIP-2](https://huggingface.co/Salesforce/blip2-opt-2.7b)
 """
 )
