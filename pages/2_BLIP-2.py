@@ -13,6 +13,7 @@ st.write("""
 """)
 
 if st.button('Ask model'):
-    response = requests.post(f'{url_server}/{route_blip2}')
-    response = response.json()
+    with st.spinner('Model runs...'):
+        response = requests.post(f'{url_server}/{route_blip2}')
+        response = response.json()
     st.write(response['answer'])
