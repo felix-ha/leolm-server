@@ -9,6 +9,8 @@ services:
     volumes:
       - ./resources:/app/resources
     restart: always
+    environment:
+    - DEPLOY_LLM="True"
     deploy:
       resources:
         reservations:

@@ -1,4 +1,4 @@
-import argparse
+import os
 from flask import Flask, request, jsonify
 import time
 import logging
@@ -109,16 +109,7 @@ def upload():
 
 
 if __name__ == '__main__':
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument(
-    #     "--deploy_llm",
-    #     action=argparse.BooleanOptionalAction,
-    #     default=False,
-    #     help="Load llm, gpu required",
-    # )
-
-    # args = parser.parse_args()
-    deploy_llm = True
+    deploy_llm = os.getenv('DEPLOY_LLM', None)
     try:
         logger.info("starting server")
         if deploy_llm:
