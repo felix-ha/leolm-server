@@ -11,8 +11,21 @@ def run():
     raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
 
     question = "how many dogs are in the picture?"
-    inputs = processor(raw_image, question, return_tensors="pt").to("cuda", torch.float16)
+    qtext = f"Question: {question} Answer:"
+    inputs = processor(raw_image, qtext, return_tensors="pt").to("cuda", torch.float16)
 
-    out = model.generate(**inputs)
+    decoding_method = "Nucleus sampling"
+
+    out = model.generate(
+                        **inputs,
+                        do_sample=decoding_method == "Nucleus sampling",
+                        temperature=1.0,
+                        length_penalty=1.0,
+                        repetition_penalty=1.5,
+                        max_length=50,
+                        min_length=1,
+                        num_beams=5,
+                        top_p=0.9,
+                    )
 
     return processor.decode(out[0], skip_special_tokens=True).strip()
