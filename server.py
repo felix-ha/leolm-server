@@ -15,7 +15,6 @@ file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
 deploy_llm = os.getenv('DEPLOY_LLM', None)
-deploy_llm = None
 logger.info(f"DEPLOY_LLM: {deploy_llm}")
 try:
     logger.info("starting server")
