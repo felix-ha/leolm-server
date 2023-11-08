@@ -63,48 +63,48 @@ with tempfile.TemporaryDirectory() as tmpdir:
     # Frag  LeoLM!
     """)
 
-    advanced = st.toggle('Erweiterte Einstellungen')
+    # advanced = st.toggle('Erweiterte Einstellungen')
 
-    if advanced:
-        chunk_size = st.slider('chunk_size', 10, 10_000, value=100, step=50, help="Länge der Textabschnitte, die in die Vektordatenbank geladen werden.")
-        chunk_overlap = st.slider('chunk_overlap', 0, 500, value=10, step=10, help="Überlappung der Textabschnitte, die in die Vektordatenbank geladen werden.")
-        n_results = st.slider('n_results', 1, 10, value=3, step=1, help="Anzahl der Ergebnisse, die zurückgegeben werden und als Kontext verwendet werden.")
+    # if advanced:
+    #     chunk_size = st.slider('chunk_size', 10, 10_000, value=100, step=50, help="Länge der Textabschnitte, die in die Vektordatenbank geladen werden.")
+    #     chunk_overlap = st.slider('chunk_overlap', 0, 500, value=10, step=10, help="Überlappung der Textabschnitte, die in die Vektordatenbank geladen werden.")
+    #     n_results = st.slider('n_results', 1, 10, value=3, step=1, help="Anzahl der Ergebnisse, die zurückgegeben werden und als Kontext verwendet werden.")
 
-    option = st.selectbox(
-    'Was möchtest du fragen?',
-    ('Freie Frage', 'Frage Wikipedia', 'Frage zu einem Dokument'))
+    # option = st.selectbox(
+    # 'Was möchtest du fragen?',
+    # ('Freie Frage', 'Frage Wikipedia', 'Frage zu einem Dokument'))
 
-    if option == 'Frage zu einem Dokument':
-        files = st.file_uploader("File upload", type=["txt"], accept_multiple_files=True)
+    # if option == 'Frage zu einem Dokument':
+    #     files = st.file_uploader("File upload", type=["txt"], accept_multiple_files=True)
 
-        if len(files) == 0:
-            st.info("Keine Datei ausgewählt.")
+    #     if len(files) == 0:
+    #         st.info("Keine Datei ausgewählt.")
 
-        if len(files) >= 1:
-            for i in range(len(files)):
-                path_to_upload = tmpdir_path / files[i].name
+    #     if len(files) >= 1:
+    #         for i in range(len(files)):
+    #             path_to_upload = tmpdir_path / files[i].name
 
-                bytes_data = files[i].read() 
-                with open(path_to_upload, "wb") as f:
-                    f.write(bytes_data) 
+    #             bytes_data = files[i].read() 
+    #             with open(path_to_upload, "wb") as f:
+    #                 f.write(bytes_data) 
 
-                # TODO: Accept multiple files
-                break
+    #             # TODO: Accept multiple files
+    #             break
             
-            if len(files) > 1:
-                st.warning("Nur eine Datei ist akutell unterstützt! Jede weitere Datei wird ignoriert.")
+    #         if len(files) > 1:
+    #             st.warning("Nur eine Datei ist akutell unterstützt! Jede weitere Datei wird ignoriert.")
 
-    elif option == 'Frage Wikipedia':
-        wiki_keyword = st.text_input('Artikel', help='Der Wikipedia Artikel, welcher am besten zum Stichwort passt, wird ausgewählt')
+    # elif option == 'Frage Wikipedia':
+    #     wiki_keyword = st.text_input('Artikel', help='Der Wikipedia Artikel, welcher am besten zum Stichwort passt, wird ausgewählt')
 
-        if wiki_keyword:
-            wiki_article = get_wiki_article(wiki_keyword)
-            st.write(f"Wikipedia Artikel - {wiki_article.original_title} - wird befragt.")
+    #     if wiki_keyword:
+    #         wiki_article = get_wiki_article(wiki_keyword)
+    #         st.write(f"Wikipedia Artikel - {wiki_article.original_title} - wird befragt.")
 
-            path_to_upload = tmpdir_path / "wikipedia.txt"
+    #         path_to_upload = tmpdir_path / "wikipedia.txt"
 
-            with open(path_to_upload, "w", encoding="utf-8") as f:
-                f.write(wiki_article.content)
+    #         with open(path_to_upload, "w", encoding="utf-8") as f:
+    #             f.write(wiki_article.content)
 
     for message in st.session_state.messages:
         with st.chat_message(message["role"]):
