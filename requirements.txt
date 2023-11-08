@@ -1,4 +1,10 @@
-Flask==3.0.0
+fastapi==0.104.1
+uvicorn==0.24.0
+httpx==0.25.1
+python-multipart==0.0.6
+
+pytest==7.4.3
+
 torch==2.0.0
 transformers==4.34.1
 accelerate==0.24.1
@@ -7,6 +13,7 @@ sentence-transformers==2.2.2
 faiss-gpu==1.7.2
 supervisor==4.2.5
 wikipedia==1.4.0 
+
 altair
 pydeck
 streamlit
