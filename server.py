@@ -24,19 +24,6 @@ port = 5000
 route_check = '/up-status'
 route_model = '/llm'
 route_upload = '/upload'
-route_blip2 = '/blip2'
-
-
-@app.route(route_blip2, methods=['POST'])
-def blip2():
-    try:
-        result = run()
-        response = {'answer': result}
-        logger.info("response: " + str(response))
-        return jsonify(response)
-    except Exception as e:
-        logger.exception(str(e))
-        return jsonify({'error': str(e)}), 400
 
 
 @app.route(route_check)
@@ -58,7 +45,7 @@ def upload():
         except:
             prompt = None
             logger.info(f'no prompt received')
-            
+
         response = ask_question(question, prompt)
         logger.info(response)
         return jsonify(response), 200
@@ -84,6 +71,7 @@ if __name__ == '__main__':
             logger.info("loaded model in " + str(end_time - start_time) + " seconds")
         else: 
             logging.info("using mock model")
+            generator = None
     except Exception as e:
         logger.exception(str(e))
         exit(1)
