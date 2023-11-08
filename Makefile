@@ -8,7 +8,7 @@ run:
 
 .PHONY: stop
 stop:
-	docker compose stop python-server
+	docker compose down
 
 
 .PHONY: docker_build
