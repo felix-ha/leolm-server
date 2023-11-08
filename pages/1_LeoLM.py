@@ -17,7 +17,8 @@ route_model = '/llm'
 
 def server_is_online(url_server: str, route_check:str) -> bool:
     try:
-      response = requests.get(f'{url_server}/{route_check}')
+      response = requests.get(f'{url_server}{route_check}')
+      print(response)
       if response.status_code == 200:
         return True
       else:
@@ -35,11 +36,11 @@ def ask_model(url_server: str, route_check:str, route_model: str, question: str,
             prompt_history = None
             with open(path_to_upload, "rb") as f:
                 file = {'file': f}
-                response = requests.post(f'{url_server}/{route_model}', files=file, data=payload)
-                response = response.json()
+                response = requests.post(f'{url_server}{route_model}', files=file, data=payload)
+                response = response.json()[0]
         else:
-            response = requests.post(f'{url_server}/{route_model}', data=payload)
-            response = response.json()
+            response = requests.post(f'{url_server}{route_model}', data=payload)
+            response = response.json()[0]
 
         prompt_history = response['answer'][0]['generated_text']
         answer = prompt_history.split('<|im_start|>assistant')[-1].lstrip()

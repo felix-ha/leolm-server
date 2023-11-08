@@ -10,6 +10,4 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-ENV FLASK_APP=server.py
-
-CMD [ "python3", "server.py"]
+CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "5000"]

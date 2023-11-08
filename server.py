@@ -1,11 +1,8 @@
 import os
-from flask import Flask, request, jsonify
+from fastapi import FastAPI, Form, UploadFile, File
+import uvicorn
 import time
 import logging
-import tempfile
-from pathlib import Path
-from index import get_context, get_documents
-from models.blip2 import run 
 from logic import ask_question
 
 logger = logging.getLogger()
@@ -17,8 +14,7 @@ file_handler.setLevel(logging.INFO)
 file_handler.setFormatter(formatter)
 logger.addHandler(file_handler)
 
-
-app = Flask(__name__)
+app = FastAPI()
 
 port = 5000
 route_check = '/up-status'
@@ -26,33 +22,24 @@ route_model = '/llm'
 route_upload = '/upload'
 
 
-@app.route(route_check)
+@app.get(route_check)
 def server_is_online():
     logger.info("checked server status")
     return "online"
 
 
-@app.route(route_model, methods=['POST'])
-def upload():
+@app.post(route_model)
+def upload(question: str = Form(...), prompt: str = Form(None)):
     logger.info(f'received new chat message')
     try:
-        question = request.form['question']
         logger.info(f'question: {question}')
-
-        try:
-            prompt = request.form['prompt']
-            logger.info(f'prompt: {prompt}')
-        except:
-            prompt = None
-            logger.info(f'no prompt received')
-
         response = ask_question(question, prompt)
         logger.info(response)
-        return jsonify(response), 200
+        return response, 200
     
     except Exception as e:
         logger.exception(str(e))
-        return jsonify({'error': str(e)}), 400
+        return {'error': str(e)}, 400
 
 
 if __name__ == '__main__':
@@ -75,5 +62,5 @@ if __name__ == '__main__':
     except Exception as e:
         logger.exception(str(e))
         exit(1)
-    app.run(host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=port)
     logger.info("server stopped")
