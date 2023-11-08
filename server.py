@@ -49,7 +49,17 @@ def server_is_online():
 def upload():
     logger.info(f'received new chat message')
     try:
-        response = ask_question(request.json['question'], request.json['prompt'])
+        question = request.form['question']
+        logger.info(f'question: {question}')
+
+        try:
+            prompt = request.form['prompt']
+            logger.info(f'prompt: {prompt}')
+        except:
+            prompt = None
+            logger.info(f'no prompt received')
+            
+        response = ask_question(question, prompt)
         logger.info(response)
         return jsonify(response), 200
     

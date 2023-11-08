@@ -1,4 +1,4 @@
-from time import time
+import time
 
 
 promt_new_question = "<|im_start|>user\n{question}<|im_end|>\n<|im_start|>assistant\n" 
