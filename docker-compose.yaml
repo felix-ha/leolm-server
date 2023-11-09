@@ -9,7 +9,7 @@ services:
     volumes:
       - ./resources:/app/resources
     restart: always
-    environment: .env
+    env_file: .env
     deploy:
       resources:
         reservations:
