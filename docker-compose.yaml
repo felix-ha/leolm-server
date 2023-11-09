@@ -8,6 +8,7 @@ services:
       - "5000:5000"  
     volumes:
       - ./resources:/app/resources
+      - /var/huggingface:/var/huggingface
     restart: always
     env_file: .env
     deploy:
