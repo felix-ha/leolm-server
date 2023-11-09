@@ -1,0 +1,14 @@
+server:
+  port: 5000
+  routes:
+    status: '/status'
+    model: '/llm'
+
+models:
+  mock:
+    name: "Mock"
+  leolm:
+    name: "LeoLM/leo-mistral-hessianai-7b-chat"
+    do_sample: true
+    top_p: 0.95
+    max_length: 8192

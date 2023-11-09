@@ -3,7 +3,9 @@ from fastapi import FastAPI, Form, UploadFile, File
 import uvicorn
 import time
 import logging
-from logic import ask_question
+from config import configuration
+from model_api import ServerStatus, LLMResponse
+from logic import OfflineModel
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -21,14 +23,13 @@ try:
     if deploy_llm:
         logging.info("loading model")
         start_time = time.perf_counter()
-        from transformers import pipeline
-        import torch  
-        generator = pipeline(model="LeoLM/leo-mistral-hessianai-7b-chat", device="cuda", torch_dtype=torch.float16)
+        from llm_models import LeoLM
+        model = LeoLM()
         end_time = time.perf_counter()
         logger.info("loaded model in " + str(end_time - start_time) + " seconds")
     else: 
         logging.info("using mock model")
-        generator = None
+        model = OfflineModel()
 except Exception as e:
     logger.exception(str(e))
     exit(1)
@@ -37,26 +38,21 @@ except Exception as e:
 app = FastAPI()
 
 
-port = 5000
-route_check = '/up-status'
-route_model = '/llm'
-route_upload = '/upload'
-
-
-@app.get(route_check)
+@app.get(configuration.server.routes.status, response_model=ServerStatus)
 def server_is_online():
     logger.info("checked server status")
-    return "online"
+    return ServerStatus(status=True) 
 
 
-@app.post(route_model)
-def upload(question: str = Form(...), prompt: str = Form(None)):
+@app.post(configuration.server.routes.model, response_model=LLMResponse)
+# TODO input argument as pydantic model 
+def ask_model(question: str = Form(...), prompt_history: str = Form(None), rag_context: str = Form(None)) -> LLMResponse:
     logger.info(f'received new chat message')
     try:
         logger.info(f'question: {question}')
-        response = ask_question(question, prompt, generator)
-        logger.info(response)
-        return response, 200
+        llm_response = model(question, prompt_history)
+        logger.info(llm_response)
+        return llm_response
     
     except Exception as e:
         logger.exception(str(e))
@@ -64,5 +60,5 @@ def upload(question: str = Form(...), prompt: str = Form(None)):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=configuration.server.port)
     logger.info("server stopped")

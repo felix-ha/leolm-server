@@ -5,19 +5,17 @@ import requests
 import tempfile
 import streamlit as st
 from index import get_wiki_article
+from config import configuration
+from model_api import LLMResponse, LLMResponseCreate
 
 
 ip_adress_server = os.getenv('IP_ADRESS_SERVER', 'localhost')
-port = 5000
-url_server = f'http://{ip_adress_server}:{port}'
-route_check = '/up-status'
-route_model = '/llm'
+url_server = f'http://{ip_adress_server}:{configuration.server.port}'
 
 
-
-def server_is_online(url_server: str, route_check:str) -> bool:
+def server_is_online(url_server: str, route_status:str) -> bool:
     try:
-      response = requests.get(f'{url_server}{route_check}')
+      response = requests.get(f'{url_server}{route_status}')
       print(response)
       if response.status_code == 200:
         return True
@@ -27,26 +25,32 @@ def server_is_online(url_server: str, route_check:str) -> bool:
       return False
 
 
-def ask_model(url_server: str, route_check:str, route_model: str, question: str, context: str, prompt_history: str, path_to_upload=None):
-    if server_is_online(url_server, route_check):
-        payload = {'question': question, 'context': context, 'prompt': prompt_history}
+def ask_model(url_server: str, route_status:str, route_model: str, question: str, context: str, prompt_history: str = None, path_to_upload=None) -> LLMResponse:
+    if server_is_online(url_server, route_status):
+        payload = {'question': question, 'prompt_history': prompt_history}
+        respone = response = requests.post(f'{url_server}{route_model}', data=payload)
+        if response.status_code == 200:
+            return LLMResponse.model_validate(response.json())
+        return LLMResponse(answer="No transformer is online.")
 
-        # Send file only at start of conversation
-        if path_to_upload and prompt_history is None:
-            prompt_history = None
-            with open(path_to_upload, "rb") as f:
-                file = {'file': f}
-                response = requests.post(f'{url_server}{route_model}', files=file, data=payload)
-                response = response.json()[0]
-        else:
-            response = requests.post(f'{url_server}{route_model}', data=payload)
-            response = response.json()[0]
+    #     payload = {'question': question, 'context': context, 'prompt': prompt_history}
 
-        prompt_history = response['answer'][0]['generated_text']
-        answer = prompt_history.split('<|im_start|>assistant')[-1].lstrip()
-        return answer, prompt_history, response['context']
-    else:
-        return "LLM ist offline!", None, None
+    #     # Send file only at start of conversation
+    #     if path_to_upload and prompt_history is None:
+    #         prompt_history = None
+    #         with open(path_to_upload, "rb") as f:
+    #             file = {'file': f}
+    #             response = requests.post(f'{url_server}{route_model}', files=file, data=payload)
+    #             response = response.json()[0]
+    #     else:
+    #         response = requests.post(f'{url_server}{route_model}', data=payload)
+    #         response = response.json()[0]
+
+    #     prompt_history = response['answer'][0]['generated_text']
+    #     answer = prompt_history.split('<|im_start|>assistant')[-1].lstrip()
+    #     return answer, prompt_history, response['context']
+    # else:
+    #     return "LLM ist offline!", None, None
 
 
 
@@ -121,17 +125,18 @@ with tempfile.TemporaryDirectory() as tmpdir:
             full_response = ""
             prompt_history = None
             if len(st.session_state.messages) > 2:
-                prompt_history = st.session_state.messages[-2]['promt_history']
+                prompt_history = st.session_state.messages[-2]['prompt_history']
                 path_to_upload = None
-            assistant_response, prompt_history, context = ask_model(url_server, route_check, route_model, prompt, context, prompt_history, path_to_upload)
-
-            for chunk in assistant_response.split():
+            print(prompt_history)
+            llm_result = ask_model(url_server, configuration.server.routes.status, configuration.server.routes.model, prompt, context, prompt_history, path_to_upload)
+            print(llm_result)
+            for chunk in llm_result.answer.split():
                 full_response += chunk + " "
                 time.sleep(0.1)
                 message_placeholder.markdown(full_response + "▌")
             message_placeholder.markdown(full_response)
 
-        st.session_state.messages.append({"role": "assistant", "content": full_response, "promt_history": prompt_history, "context": context})
+        st.session_state.messages.append({"role": "assistant", "content": full_response, "prompt_history": llm_result.prompt_history, "context": context})
 
         if context:
             st.write(f'Beantwortet mit Kontext:\n {st.session_state.messages[-1]["context"]}')
