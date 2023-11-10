@@ -2,6 +2,7 @@ FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu20.04
 
 RUN apt-get update
 RUN apt-get install -y python3 python3-pip
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
 
 # Install Python 3.11 manually
 RUN apt-get install -y software-properties-common
