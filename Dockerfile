@@ -8,6 +8,7 @@ RUN apt-get install -y software-properties-common
 RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update
 RUN apt-get install -y python3.11 
+RUN apt install python3.11-distutils
 
 RUN rm -r /usr/bin/python3
 RUN cp /usr/bin/python3.11  /usr/bin/python3
