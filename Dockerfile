@@ -9,14 +9,13 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update
 RUN apt-get install -y python3.11 python3-pip
 
+RUN rm -r /usr/bin/python3
+RUN cp /usr/bin/python3.11  /usr/bin/python3
+
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
-
-RUN rm -r /usr/bin/python3
-RUN cp /usr/bin/python3.11  /usr/bin/python3
-
 
 COPY . .
 
