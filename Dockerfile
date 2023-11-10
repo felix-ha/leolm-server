@@ -14,6 +14,12 @@ WORKDIR /app
 COPY requirements.txt requirements.txt
 RUN pip3 install --no-cache-dir -r requirements.txt
 
+RUN rm /usr/bin/python3
+RUN cp /usr/bin/python3.11 /usr/bin/python3
+
+
 COPY . .
 
-CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "5000"]
+#CMD ["/bin/bash"]
+
+#CMD ["uvicorn", "server:app", "--host", "0.0.0.0", "--port", "5000"]
