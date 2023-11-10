@@ -30,9 +30,9 @@ def ask_model(url_server: str, route_status:str, route_model: str, llm_question:
         if response.status_code == 200:
             return LLMResponse.model_validate(response.json())
         else:
-            return LLMResponse(answer="No transformer is online.")
+            return LLMResponse(answer="No transformer is online.", chat = Chat())
     else:
-        return LLMResponse(answer="No transformer is online.")
+        return LLMResponse(answer="No transformer is online.", chat = Chat())
 
 
 if "chat" not in st.session_state:
