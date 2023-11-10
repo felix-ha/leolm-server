@@ -9,8 +9,6 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt-get update
 RUN apt-get install -y python3.11 python3-pip
 
-RUN ln -s /usr/bin/python3 /usr/bin/python3.11
-
 WORKDIR /app
 
 COPY requirements.txt requirements.txt
