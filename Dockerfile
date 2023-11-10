@@ -12,7 +12,7 @@ RUN apt-get install -y python3.11-distutils
 
 RUN rm -r /usr/bin/python3
 RUN cp /usr/bin/python3.11  /usr/bin/python3
-RUN apt-get install -y python3-pip
+RUN apt-get install -y python3-pip html5lib
 
 WORKDIR /app
 
