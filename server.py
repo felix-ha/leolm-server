@@ -4,8 +4,9 @@ import uvicorn
 import time
 import logging
 from config import configuration
-from model_api import ServerStatus, LLMResponse
-from logic import OfflineModel
+from model_api import ServerStatus
+from logic import LLM, LLMQuestion, LLMResponse
+
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -23,13 +24,12 @@ try:
     if deploy_llm:
         logging.info("loading model")
         start_time = time.perf_counter()
-        from llm_models import LeoLM
-        model = LeoLM()
+        model = LLM(configuration.models.leo_lm.name)
         end_time = time.perf_counter()
         logger.info("loaded model in " + str(end_time - start_time) + " seconds")
     else: 
         logging.info("using mock model")
-        model = OfflineModel()
+        model = LLM(configuration.models.mock.name)
 except Exception as e:
     logger.exception(str(e))
     exit(1)
@@ -42,21 +42,12 @@ app = FastAPI()
 def server_is_online():
     logger.info("checked server status")
     return ServerStatus(status=True) 
-
+   
 
 @app.post(configuration.server.routes.model, response_model=LLMResponse)
-# TODO input argument as pydantic model 
-def ask_model(question: str = Form(...), prompt_history: str = Form(None), rag_context: str = Form(None)) -> LLMResponse:
-    logger.info(f'received new chat message')
-    try:
-        logger.info(f'question: {question}')
-        llm_response = model(question, prompt_history)
-        logger.info(llm_response)
-        return llm_response
-    
-    except Exception as e:
-        logger.exception(str(e))
-        return {'error': str(e)}, 400
+def create_item(item: LLMQuestion):
+    print(item)
+    return model(item.question, item.chat)
 
 
 if __name__ == '__main__':

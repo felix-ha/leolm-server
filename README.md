@@ -1,6 +1,6 @@
-# leolm-server
+# transformers-playground
 
-## Installation 
+## Installation of server
 
 update and upgrade 
 ```

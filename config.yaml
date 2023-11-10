@@ -6,7 +6,7 @@ server:
 
 models:
   mock:
-    name: "Mock"
+    name: "offline"
   leolm:
     name: "LeoLM/leo-mistral-hessianai-7b-chat"
     do_sample: true
