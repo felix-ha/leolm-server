@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-from transformers import pipeline
+from transformers import pipeline, AutoTokenizer
 import torch 
 
 class Message(BaseModel):
