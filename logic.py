@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
+from transformers import pipeline
+import torch 
 
 class Message(BaseModel):
     role: str
