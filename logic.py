@@ -47,6 +47,8 @@ class LLM:
         self.top_p = 0.95
         self.max_length = 8192
 
+        self.access_token = os.getenv('HF_ACCESS_TOKEN', default = None)
+
     def __call__(
         self, question: str, chat: Chat = Chat(), rag_context: str = None
     ) -> LLMResponse:
@@ -60,7 +62,7 @@ class LLM:
             self.tokenizer = MockTockenizer
         else:
             self.generator = self.get_pipeline(self.name)
-            self.tokenizer = AutoTokenizer.from_pretrained(self.name)
+            self.tokenizer = AutoTokenizer.from_pretrained(self.name, token=self.access_token)
 
     def continue_chat(self, question: str, chat: Chat) -> LLMResponse:
         chat_result = chat.model_copy(deep=True)
@@ -75,15 +77,15 @@ class LLM:
         return LLMResponse(answer=answer, chat=chat_result)
 
     def get_pipeline(self, name):
-        if name == "LeoLM/leo-mistral-hessianai-7b-chat":
-            return pipeline(model=self.name, device="cuda", torch_dtype=torch.float16)
+        if name == configuration.models.leolm.name:
+            return pipeline(model=self.name, device="cuda", torch_dtype=torch.float16, token=self.access_token)
         else:
             return mock_generator
 
     def call_hf(self, input_prompt: str) -> str:
         if self.name == "offline":
             answer = "No Transformer loaded!"
-        elif self.name == "LeoLM/leo-mistral-hessianai-7b-chat":
+        elif self.name == configuration.models.leolm.name:
             output = self.generator(
                 input_prompt,
                 do_sample=self.do_sample,

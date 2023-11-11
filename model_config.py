@@ -21,9 +21,14 @@ class Leolm(BaseModel):
     name: str
 
 
+class Llama2(BaseModel):
+    name: str
+
+
 class Models(BaseModel):
     mock: Mock
     leolm: Leolm
+    llama2: Llama2
 
 
 class Model(BaseModel):
