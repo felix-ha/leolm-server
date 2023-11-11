@@ -19,3 +19,4 @@ wikipedia==1.4.0
 altair
 pydeck
 streamlit
+black==23.11.0
