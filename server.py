@@ -24,7 +24,7 @@ try:
     if deploy_llm:
         logging.info("loading model")
         start_time = time.perf_counter()
-        model = LLM(configuration.models.leo_lm.name)
+        model = LLM(configuration.models.leolm.name)
         end_time = time.perf_counter()
         logger.info("loaded model in " + str(end_time - start_time) + " seconds")
     else: 
