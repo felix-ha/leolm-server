@@ -15,7 +15,7 @@ url_server = f"http://{ip_adress_server}:{configuration.server.port}"
 
 def server_is_online(url_server: str, route_status: str) -> bool:
     try:
-        response = httpx.get(f"{url_server}{route_status}")
+        response = httpx.get(f"{url_server}{route_status}", timeout=None)
         if response.status_code == 200:
             return True
         else:
@@ -29,7 +29,7 @@ def ask_model(
 ) -> LLMResponse:
     if server_is_online(url_server, route_status):
         response = httpx.post(
-            f"{url_server}{route_model}", json=llm_question.model_dump()
+            f"{url_server}{route_model}", json=llm_question.model_dump(), timeout=None
         )
         if response.status_code == 200:
             return LLMResponse.model_validate(response.json())
