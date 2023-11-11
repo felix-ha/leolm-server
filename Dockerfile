@@ -1,18 +1,14 @@
 FROM nvidia/cuda:11.7.1-cudnn8-devel-ubuntu20.04
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata curl
 
-# Install Python 3.11 manually
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt-get update
-RUN apt-get install -y python3.11 
-RUN apt-get install -y python3.11-distutils
-
-RUN rm -r /usr/bin/python3
-RUN cp /usr/bin/python3.11  /usr/bin/python3
-RUN apt-get install -y python3-pip html5lib
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository ppa:deadsnakes/ppa && \
+    apt-get update && \
+    apt-get install -y python3.11 python3.11-distutils && \
+    curl -sS https://bootstrap.pypa.io/get-pip.py | python3.11
 
 WORKDIR /app
 
