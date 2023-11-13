@@ -5,9 +5,9 @@ server:
     model: '/llm'
 
 models:
-  mock:
-    name: "offline"
   leolm:
     name: "LeoLM/leo-mistral-hessianai-7b-chat"
+    split_string_for_answer: "<|im_start|>assistant"
   llama2:
       name: "meta-llama/Llama-2-7b-chat-hf"
+      split_string_for_answer: "[/INST]"

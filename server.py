@@ -5,7 +5,7 @@ import time
 import logging
 from config import configuration
 from model_api import ServerStatus
-from logic import LLM, LLMQuestion, LLMResponse
+from logic import LLM, LLMQuestion, LLMResponse, LLMTransformer
 
 
 logger = logging.getLogger()
@@ -24,12 +24,12 @@ try:
     if deploy_llm:
         logging.info("loading model")
         start_time = time.perf_counter()
-        model = LLM(configuration.models.leolm.name)
+        model = LLMTransformer(configuration.models.leolm)
         end_time = time.perf_counter()
         logger.info("loaded model in " + str(end_time - start_time) + " seconds")
     else:
         logging.info("using mock model")
-        model = LLM(configuration.models.mock.name)
+        model = LLM()
 except Exception as e:
     logger.exception(str(e))
     exit(1)

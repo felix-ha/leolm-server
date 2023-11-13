@@ -13,20 +13,17 @@ class Server(BaseModel):
     routes: Routes
 
 
-class Mock(BaseModel):
-    name: str
-
-
 class Leolm(BaseModel):
     name: str
+    split_string_for_answer: str
 
 
 class Llama2(BaseModel):
     name: str
+    split_string_for_answer: str
 
 
 class Models(BaseModel):
-    mock: Mock
     leolm: Leolm
     llama2: Llama2
 

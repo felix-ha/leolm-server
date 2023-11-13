@@ -23,7 +23,7 @@ expected_llm_response_2 = LLMResponse(
 
 
 def test_llm():
-    llm = LLM("offline")
+    llm = LLM()
 
     result = llm("How are you?")
     result_2 = llm("Fine", result.chat)
