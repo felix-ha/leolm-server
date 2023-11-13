@@ -81,7 +81,7 @@ class LLMTransformer(LLM):
     def __init__(self, model_config):
         super().__init__() 
         self.generator = pipeline(model=model_config.name, device="cuda", torch_dtype=torch.float16, token=self.access_token)
-        self.tokenizer = AutoTokenizer.from_pretrained(name, token=self.access_token)
+        self.tokenizer = AutoTokenizer.from_pretrained(model_config.name, token=self.access_token)
         self.split_string_for_answer = model_config.split_string_for_answer
     
     def generate_answer(self, input_prompt: str) -> str:
