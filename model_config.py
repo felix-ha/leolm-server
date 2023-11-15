@@ -6,6 +6,7 @@ from pydantic import BaseModel
 class Routes(BaseModel):
     status: str
     model: str
+    upload: str
 
 
 class Server(BaseModel):

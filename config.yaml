@@ -3,6 +3,7 @@ server:
   routes:
     status: '/status'
     model: '/llm'
+    upload: '/upload'
 
 models:
   leolm:

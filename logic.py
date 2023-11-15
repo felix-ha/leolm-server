@@ -39,6 +39,7 @@ class MockTokenizer:
         return ""
 
 
+
 class LLM:
     def __init__(self):
 
@@ -53,11 +54,15 @@ class LLM:
         self.access_token = os.getenv('HF_ACCESS_TOKEN', default = None)
 
     def __call__(
-        self, question: str, chat: Chat = Chat(), rag_context: str = None
+        self, question: str, chat: Chat = Chat(), context: str = None
     ) -> LLMResponse:
-        if rag_context:
-            pass
+        if context:
+            question = self.rag_prompt(question, context)
         return self.continue_chat(question, chat)
+    
+    
+    def rag_prompt(self, question, context):
+        return f'Mit dieser Information: {context}\n Beantworte diese Frage: {question}'
 
 
     def continue_chat(self, question: str, chat: Chat) -> LLMResponse:
@@ -75,7 +80,6 @@ class LLM:
         
     def generate_answer(self, input_prompt: str) -> str:
         return "No Transformer loaded!"
-
 
 class LLMTransformer(LLM):
     def __init__(self, model_config):
