@@ -64,7 +64,8 @@ def create_item(item: LLMQuestion):
             file_current_name = Path('resources') / file_current
             model_name = "distiluse-base-multilingual-cased-v1"
             documents = get_documents(str(file_current_name), chunk_size=1000, chunk_overlap=25)
-            context = get_context(documents, query, n_results=5, model_name=model_name)
+            context = get_context(documents, item.question, n_results=5, model_name=model_name)
+            logger.info(f'answering question with context\n{context}')
     except Exception as e:
         logger.info('rag failed')
         logger.exception(str(e))
