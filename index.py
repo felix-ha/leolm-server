@@ -6,7 +6,10 @@ from langchain.document_loaders import PyPDFLoader
 
 
 def get_documents(file_name, chunk_size, chunk_overlap):
-    loader = PyPDFLoader(file_name)
+    if file_name.endswith(".txt"):
+        loader = TextLoader(file_name)
+    elif file_name.endswith(".pdf"):
+        loader = PyPDFLoader(file_name)
     documents = loader.load()
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size, chunk_overlap=chunk_overlap, length_function=len

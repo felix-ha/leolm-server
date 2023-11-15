@@ -59,7 +59,7 @@ with tempfile.TemporaryDirectory() as tmpdir:
 
 
     file_to_upload = None
-    file = st.file_uploader("File upload", type=["pdf"], accept_multiple_files=False)
+    file = st.file_uploader("File upload", type=["pdf", "txt"], accept_multiple_files=False)
 
     if file:
         file_to_upload = tmpdir_path / file.name
