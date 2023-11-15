@@ -4,7 +4,6 @@ import time
 import httpx
 import tempfile
 import streamlit as st
-from index import get_wiki_article
 from config import configuration
 from logic import LLMResponse, LLMQuestion, Chat
 
