@@ -17,6 +17,14 @@ Access the app here: https://transformers-playground.streamlit.app/
 * LLMs are deployed with [huggingface transformers.](https://github.com/huggingface/transformers)
 * RAG is implemented with [langchain](https://github.com/langchain-ai/langchain) and [faiss.](https://github.com/facebookresearch/faiss)
 
+# Results of RAG 
+
+
+| Question | Document | Answer | Correct |
+| --- | --- | --- | --- |
+| Wie lange dauert der erste Studienabschnitt? | [Prüfungsordnung OTH Regensburg](https://www.oth-regensburg.de/fileadmin/Bereiche/Organisation/Rechtliche_Grundlagen/Satzungen_Ordnungen/2013/MaBA_konsolidiert_2013.pdf) | Der erste Studienabschnitt dauert zwei Semester, gemäß § 3 Abs. 1 der Studien- und Prüfungsordnung für den Bachelorstudiengang Mathematik an der Hochschule für angewandte Wissenschaften Regensburg. | ✔ |
+| Wann wird man exmatrikutliert? | [Prüfungsordnung OTH Regensburg](https://www.oth-regensburg.de/fileadmin/Bereiche/Organisation/Rechtliche_Grundlagen/Satzungen_Ordnungen/2013/MaBA_konsolidiert_2013.pdf) | Exmatrikulation bezieht sich auf den Prozess, bei dem eine Person offiziell von einer Schule, einem Programm oder einer Einrichtung ausgeschlossen wird. Der Zeitpunkt der Exmatrikulation hängt von den spezifischen Regeln und Vorschriften der Institution ab. An den meisten Hochschulen und Universitäten erfolgt die Exmatrikulation automatisch, sobald der Student alle erforderlichen Kurse absolviert hat, alle angebotenen akademischen Chancen ausgeschöpft hat und alle Verpflichtungen gegenüber der Institution erfüllt hat. In einigen Fällen kann eine Person auch auf eigenen Wunsch exmatrikuliert werden. Es ist erwähnenswert, dass die Exmatrikulation kein permanenter Ausschluss ist, da eine Person nach einer bestimmten Zeit wieder aufgenommen werden kann oder sogar die Möglichkeit hat, wieder in das Programm zurückzukehren. | ❌ info was not in document, answer was generic |
+
 # Start server
 
 Make sure that the [server is configured](https://github.com/felix-ha/transformers-playground#installation-of-server). Run `make build` to build the Docker image. `make run` creates the container with Docker compose, loads the model and starts the server. Then the server also starts automatically when the machine is booted.
