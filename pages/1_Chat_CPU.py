@@ -77,7 +77,6 @@ route_tags = "/api/tags"
 route_pull = "/api/pull"
 route_chat = "/api/chat"
 
-MODEL = 'llama2-uncensored'
 
 if "chat" not in st.session_state:
     st.session_state.chat = Chat()
@@ -100,7 +99,7 @@ MODEL = st.selectbox(
       'starling-lm',
       'codellama', 
       'orca-mini', 
-      'vicuna'), index = 2)
+      'vicuna'), index = 1)
 
 
 for message in st.session_state.chat.messages:
