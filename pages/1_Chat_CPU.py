@@ -71,7 +71,7 @@ def pull_model(url_server: str, route_pull: str, model: str) -> bool:
 
 
 ip_adress_server = os.getenv("IP_ADRESS_SERVER_CPU", "localhost")
-port = 5001
+port = 11434
 url_server = f"http://{ip_adress_server}:{port}"
 route_tags = "/api/tags"
 route_pull = "/api/pull"
@@ -125,6 +125,7 @@ if question := st.chat_input("input..."):
         messages = st.session_state.chat.model_dump()
         data = {"model": MODEL, "stream": False}
         data.update(messages)
+        print(data)
         
         try:
             response = httpx.post(f"{url_server}{route_chat}", json=data, headers={"Content-Type": "application/json"}, timeout=None)
@@ -144,4 +145,5 @@ if question := st.chat_input("input..."):
         message_placeholder.markdown(full_response)
 
         st.session_state.chat.add_answer(answer)
+        logging.info(f"Chat: {st.session_state.chat}")
 
