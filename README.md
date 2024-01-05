@@ -4,6 +4,8 @@
 
 Access the app here: https://transformers-playground.streamlit.app/
 
+The server is offline most of the time due to costs of running it. To start a new chat, the page needs to be refreshed. 
+
 # Features
 
 * Plain chat with a LLM
@@ -22,8 +24,17 @@ Access the app here: https://transformers-playground.streamlit.app/
 
 | Question | Document | Answer | Correct |
 | --- | --- | --- | --- |
-| Wie lange dauert der erste Studienabschnitt? | [Prüfungsordnung OTH Regensburg](https://www.oth-regensburg.de/fileadmin/Bereiche/Organisation/Rechtliche_Grundlagen/Satzungen_Ordnungen/2013/MaBA_konsolidiert_2013.pdf) | Der erste Studienabschnitt dauert zwei Semester, gemäß § 3 Abs. 1 der Studien- und Prüfungsordnung für den Bachelorstudiengang Mathematik an der Hochschule für angewandte Wissenschaften Regensburg. | ✔ |
+| Wie lange dauert der erste Studienabschnitt? | [Prüfungsordnung OTH Regensburg](https://www.oth-regensburg.de/fileadmin/Bereiche/Organisation/Rechtliche_Grundlagen/Satzungen_Ordnungen/2013/MaBA_konsolidiert_2013.pdf) | Der erste Studienabschnitt dauert zwei Semester, gemäß § 3 Abs. 1 der Studien- und Prüfungsordnung für den Bachelorstudiengang Mathematik an der Hochschule für angewandte Wissenschaften Regensburg. | ✅ |
 | Wann wird man exmatrikutliert? | [Prüfungsordnung OTH Regensburg](https://www.oth-regensburg.de/fileadmin/Bereiche/Organisation/Rechtliche_Grundlagen/Satzungen_Ordnungen/2013/MaBA_konsolidiert_2013.pdf) | Exmatrikulation bezieht sich auf den Prozess, bei dem eine Person offiziell von einer Schule, einem Programm oder einer Einrichtung ausgeschlossen wird. Der Zeitpunkt der Exmatrikulation hängt von den spezifischen Regeln und Vorschriften der Institution ab. An den meisten Hochschulen und Universitäten erfolgt die Exmatrikulation automatisch, sobald der Student alle erforderlichen Kurse absolviert hat, alle angebotenen akademischen Chancen ausgeschöpft hat und alle Verpflichtungen gegenüber der Institution erfüllt hat. In einigen Fällen kann eine Person auch auf eigenen Wunsch exmatrikuliert werden. Es ist erwähnenswert, dass die Exmatrikulation kein permanenter Ausschluss ist, da eine Person nach einer bestimmten Zeit wieder aufgenommen werden kann oder sogar die Möglichkeit hat, wieder in das Programm zurückzukehren. | ❌ info was not in document, answer was generic |
+| Was war 2021 in Kanada?| [tageschau.de Artikel über den Klimawandel](https://www.tagesschau.de/wissen/klima/attributionsforschung-100.html) | Eine Hitzewelle brachte Temperaturen von bis zu 49,6 Grad Celsius. | ✅ |
+| Was erkannte Henri Poincaré 1895? | [Spektrum der Wissenschaft Artikel über den Kategorientheorie](https://www.spektrum.de/news/kategorientheorie-mathematik-aus-der-vogelperspektive/2197350) |  Henri Poincaré erkannte 1895, dass es eine Möglichkeit gibt, Löcher auf einer geometrischen Form mit algebraischen Mitteln aufzuspüren. Er erkannte, dass eine Möglichkeit darin besteht, alle möglichen geschlossenen Kurven auf einer Oberfläche zu untersuchen. | ✅ |
+| Wie oft wurde das Album Back in Black verkauft? | [Wikipedia Artikel über AC/DC](https://de.wikipedia.org/wiki/AC/DC) |  Back in Black hat laut einigen Quellen[2][3][4] über 50 Millionen Tonträger weltweit verkauft. | ✅ |
+
+## ToDos
+
+* Improve RAG parameters, they are not really optimized at the moment. 
+* Investigate behaviour of vector database
+
 
 # Start server
 
