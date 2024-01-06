@@ -8,7 +8,7 @@ from config import configuration
 from logic import LLMResponse, LLMQuestion, Chat
 
 
-ip_adress_server = os.getenv("IP_ADRESS_SERVER", "localhost")
+ip_adress_server = "184.105.3.215" 
 url_server = f"http://{ip_adress_server}:{configuration.server.port}"
 
 
