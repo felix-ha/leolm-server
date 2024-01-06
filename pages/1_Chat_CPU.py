@@ -70,9 +70,7 @@ def pull_model(url_server: str, route_pull: str, model: str) -> bool:
         logging.info(f"Model {model} not loaded.")
 
 
-ip_adress_server = os.getenv("IP_ADRESS_SERVER_CPU", "localhost")
-port = 11434
-url_server = f"http://{ip_adress_server}:{port}"
+url_server = "https://ollama.api.felix-jobson.net" 
 route_tags = "/api/tags"
 route_pull = "/api/pull"
 route_chat = "/api/chat"
