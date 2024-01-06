@@ -2,7 +2,7 @@
 
 > A python webserver with a streamlit app to provide interactive access to LLMs and quickly test ideas.
 
-Access the app here: https://transformers-playground.streamlit.app/
+Access the app here: https://transformers-playground.felix-jobson.net
 
 The server is offline most of the time due to costs of running it. To start a new chat, the page needs to be refreshed. 
 
