@@ -73,11 +73,3 @@ sudo usermod -aG docker $USER
 ```bash
 newgrp docker
 ```
-
-## Configure streamlit
-
-Set the `IP_ADRESS_SERVER` environment variable in the [streamlit community cloud](https://share.streamlit.io/) settings as a secret. 
-
-
-
-
