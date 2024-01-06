@@ -9,3 +9,7 @@ run:
 .PHONY: stop
 stop:
 	docker compose down
+
+.PHONY: docker_build
+docker_build:
+	docker build . -t transformers-playground -f Dockerfile.streamlit
